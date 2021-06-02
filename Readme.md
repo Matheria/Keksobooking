@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Сергей Савинков](https://up.htmlacademy.ru/javascript/23/user/451829).
-* Наставник: [Игорь Агапов](https://htmlacademy.ru/profile/id1034633).
+* Наставник: [Михаил Маклай](https://htmlacademy.ru/profile/mikhailmaclay).
 
 ---
 
