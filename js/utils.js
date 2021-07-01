@@ -20,4 +20,36 @@ export const getRandomArray = (array) => {
   return [...new Set(randomArray)];
 };
 
+export const pluralize = (number, wordForms) => {
+  const [one, two, many] = wordForms;
 
+  const mod10 = number % 10;
+  const mod100 = number % 100;
+
+  switch (true) {
+    case mod100 >= 11 && mod100 <= 20:
+      return many || two;
+
+    case mod10 > 5:
+      return many || two;
+
+    case mod10 === 1:
+      return one;
+
+    case mod10 >= 2 && mod10 <= 4:
+      return two;
+
+    default:
+      return many || two;
+  }
+};
+
+export const createAndFillArray = (length, fnOrValue) => {
+  if (typeof fnOrValue === 'function') {
+    return Array.from({length}).map(() => fnOrValue());
+  }
+
+  return Array.from({length}).fill(fnOrValue);
+};
+
+export const getFirstArrayElement = (array) => array[0];
