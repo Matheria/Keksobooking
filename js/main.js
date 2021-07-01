@@ -1,9 +1,9 @@
 import {createAdv} from './mocks/adv.js';
+import {createAdCard} from './ad-card.js';
 
-const ADV_COUNT = 10;
+const ad = createAdv();
+const adCard = createAdCard(ad);
 
-const adv = Array.from({length: ADV_COUNT}).map(() =>
-  createAdv());
+const mapCanvas = document.querySelector('.map__canvas');
 
-// eslint-disable-next-line no-console
-console.log(adv);
+mapCanvas.appendChild(adCard);

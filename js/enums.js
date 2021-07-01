@@ -1,11 +1,3 @@
-export const HousingType = {
-  palace: 'palace',
-  flat: 'flat',
-  house: 'house',
-  bungalow: 'bungalow',
-  hotel: 'hotel',
-};
-
 export const Feature = {
   wifi: 'wifi',
   dishwasher: 'dishwasher',
@@ -13,4 +5,12 @@ export const Feature = {
   washer: 'washer',
   elevator: 'elevator',
   conditioner: 'conditioner',
+};
+
+export const HousingType = {
+  palace: 'palace',
+  flat: 'flat',
+  house: 'house',
+  bungalow: 'bungalow',
+  hotel: 'hotel',
 };
