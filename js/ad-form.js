@@ -1,5 +1,9 @@
 const adForm = document.querySelector('.ad-form');
 
+if (adForm === null) {
+  throw new Error ('adForm не нвйден');
+}
+
 export const deactivateAdForm = () => {
   adForm.classList.add('ad-form--disabled');
 
