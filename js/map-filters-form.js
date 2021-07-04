@@ -1,7 +1,7 @@
 const mapFiltersForm = document.querySelector('.map__filters');
 
 if (mapFiltersForm === null) {
-  throw new Error ('mapFiltersForm не нвйден');
+  throw new Error ('mapFiltersForm не найден');
 }
 
 export const deactivateMapFiltersForm = () => {

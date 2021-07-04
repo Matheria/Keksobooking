@@ -1,7 +1,7 @@
 const adForm = document.querySelector('.ad-form');
 
 if (adForm === null) {
-  throw new Error ('adForm не нвйден');
+  throw new Error ('adForm не найден');
 }
 
 export const deactivateAdForm = () => {
