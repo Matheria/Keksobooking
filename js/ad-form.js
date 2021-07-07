@@ -6,9 +6,9 @@ if (adForm === null) {
   throw new Error ('adForm не найден');
 }
 
-const TITLE_MIN_LENGTH = 30;
-const TITLE_MAX_LENGTH = 100;
-const MIN_PRICE_OF_HOUSING_TYPE = {
+const minTitleLength = 30;
+const maxTitleLength = 100;
+const minPriceOfHousingType = {
   [TypeOfHousing.bungalow]: 0,
   [TypeOfHousing.flat]: 1000,
   [TypeOfHousing.hotel]: 3000,
@@ -16,7 +16,7 @@ const MIN_PRICE_OF_HOUSING_TYPE = {
   [TypeOfHousing.palace]: 10000,
 };
 
-const ROOM_CAPACITY = {
+const roomCapacityByRooms = {
   1: ['1'],
   2: ['1', '2'],
   3: ['1', '2', '3'],
@@ -43,28 +43,28 @@ if (
   throw new Error ('Элементы adForm не найдены');
 }
 
-export const getTitleInput = () => {
+export const handleTitleInputChange = () => {
   const adTitle = titleInput.value.length;
 
-  if (adTitle < TITLE_MIN_LENGTH) {
-    titleInput.setCustomValidity(`Ещё ${  TITLE_MIN_LENGTH - adTitle } символов.`);
-  } else if (adTitle > TITLE_MAX_LENGTH) {
-    titleInput.setCustomValidity(`Удалите лишние ${  adTitle - TITLE_MAX_LENGTH } символов.`);
+  if (adTitle < minTitleLength) {
+    titleInput.setCustomValidity(`Ещё ${  minTitleLength - adTitle } символов.`);
+  } else if (adTitle > maxTitleLength) {
+    titleInput.setCustomValidity(`Удалите лишние ${  adTitle - maxTitleLength } символов.`);
   } else {
     titleInput.setCustomValidity('');
   }
   titleInput.reportValidity();
 };
 
-export const getTypeSelect = () => {
-  priceInput.placeholder = MIN_PRICE_OF_HOUSING_TYPE[typeSelect.value];
-  priceInput.min = MIN_PRICE_OF_HOUSING_TYPE[typeSelect.value];
+export const handleTypeSelectChange = () => {
+  priceInput.placeholder = minPriceOfHousingType[typeSelect.value];
+  priceInput.min = minPriceOfHousingType[typeSelect.value];
 };
 
-export const getPriceInput = () => {
+export const handlePriceInputChange = () => {
   const pricePerNight = priceInput.value;
   const typeOfHousing = typeSelect.value;
-  const minPrice = MIN_PRICE_OF_HOUSING_TYPE[typeOfHousing];
+  const minPrice = minPriceOfHousingType[typeOfHousing];
   const maxPrice = 1000000;
 
   if (pricePerNight < minPrice) {
@@ -77,18 +77,18 @@ export const getPriceInput = () => {
   priceInput.reportValidity();
 };
 
-export const getRoomsSelect = () => {
+export const handleRoomSelectChange = () => {
   for (const option of capacitySelect.options) {
-    option.disabled = !ROOM_CAPACITY[roomSelect.value].includes(option.value);
+    option.disabled = !roomCapacityByRooms[roomSelect.value].includes(option.value);
   }
-  capacitySelect.value = ROOM_CAPACITY[roomSelect.value].includes(capacitySelect.value) ? capacitySelect.value : ROOM_CAPACITY[roomSelect.value][0];
+  capacitySelect.value = roomCapacityByRooms[roomSelect.value].includes(capacitySelect.value) ? capacitySelect.value : roomCapacityByRooms[roomSelect.value][0];
 };
 
-export const getTimeInSelectChange = () => {
+export const handleTimeInSelectChange = () => {
   timeInSelect.value = timeOutSelect.value;
 };
 
-export const getTimeOutSelectChange = () => {
+export const handleTimeOutSelectChange = () => {
   timeOutSelect.value = timeInSelect.value;
 };
 
@@ -108,9 +108,9 @@ export const activateAdForm = () => {
   });
 };
 
-titleInput.addEventListener('input', getTitleInput);
-typeSelect.addEventListener('change', getTypeSelect);
-priceInput.addEventListener('input', getPriceInput);
-roomSelect.addEventListener('change', getRoomsSelect);
-timeInSelect.addEventListener('change', getTimeOutSelectChange);
-timeOutSelect.addEventListener('change', getTimeInSelectChange);
+titleInput.addEventListener('input', handleTitleInputChange);
+typeSelect.addEventListener('change', handleTypeSelectChange);
+priceInput.addEventListener('input', handlePriceInputChange);
+roomSelect.addEventListener('change', handleRoomSelectChange);
+timeInSelect.addEventListener('change', handleTimeOutSelectChange);
+timeOutSelect.addEventListener('change', handleTimeInSelectChange);
