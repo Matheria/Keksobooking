@@ -7,7 +7,7 @@ export const Feature = {
   conditioner: 'conditioner',
 };
 
-export const HousingType = {
+export const TypeOfHousing = {
   palace: 'palace',
   flat: 'flat',
   house: 'house',

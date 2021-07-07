@@ -1,5 +1,5 @@
 import {getRandomArrayElement, getRandomNumberInRange, getRandomArray} from '../utils.js';
-import {HousingType, Feature} from '../enums.js';
+import {TypeOfHousing, Feature} from '../enums.js';
 
 const OFFERS_TITLES = [
   'Уютное гнездышко для молодоженов',
@@ -29,11 +29,11 @@ const MIN_PRICE = 1000;
 const MAX_PRICE = 10000;
 
 const HOUSING_TYPES = [
-  HousingType.palace,
-  HousingType.flat,
-  HousingType.house,
-  HousingType.bungalow,
-  HousingType.hotel,
+  TypeOfHousing.palace,
+  TypeOfHousing.flat,
+  TypeOfHousing.house,
+  TypeOfHousing.bungalow,
+  TypeOfHousing.hotel,
 ];
 
 const MIN_ROOMS = 1;

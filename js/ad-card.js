@@ -1,4 +1,4 @@
-import {Feature, HousingType} from './enums.js';
+import {Feature, TypeOfHousing} from './enums.js';
 import {pluralize} from './utils.js';
 
 const featureName = {
@@ -11,11 +11,11 @@ const featureName = {
 };
 
 const housingTypeName = {
-  [HousingType.palace]: 'Дворец',
-  [HousingType.flat]: 'Квартира',
-  [HousingType.house]: 'Дом',
-  [HousingType.bungalow]: 'Бунгало',
-  [HousingType.hotel]: 'Отель',
+  [TypeOfHousing.bungalow]: 'Бунгало',
+  [TypeOfHousing.flat]: 'Квартира',
+  [TypeOfHousing.hotel]: 'Отель',
+  [TypeOfHousing.house]: 'Дом',
+  [TypeOfHousing.palace]: 'Дворец',
 };
 
 const createAdCardOfferFeature = (feature) => {
