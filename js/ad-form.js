@@ -7,7 +7,7 @@ if (adForm === null) {
   throw new Error ('adForm не найден');
 }
 
-const minPriceOfHousingType = {
+const minPriceByHousingType = {
   [TypeOfHousing.bungalow]: 0,
   [TypeOfHousing.flat]: 1000,
   [TypeOfHousing.hotel]: 3000,
@@ -58,8 +58,8 @@ export const handleTitleInputChange = () => {
 };
 
 export const handleTypeSelectChange = () => {
-  priceInput.placeholder = minPriceOfHousingType[typeSelect.value];
-  priceInput.min = minPriceOfHousingType[typeSelect.value];
+  priceInput.placeholder = minPriceByHousingType[typeSelect.value];
+  priceInput.min = minPriceByHousingType[typeSelect.value];
 };
 
 export const handlePriceInputChange = () => {
