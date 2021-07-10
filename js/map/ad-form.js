@@ -1,5 +1,6 @@
-import {TypeOfHousing} from './enums.js';
-import {pluralize} from './utils.js';
+import {TypeOfHousing} from '../enums.js';
+import {pluralize} from '../utils.js';
+import {MAP_CENTER_COORDINATES} from './map.js';
 
 const adForm = document.querySelector('.ad-form');
 
@@ -29,6 +30,7 @@ const roomSelect = adForm.elements.rooms;
 const capacitySelect = adForm.elements.capacity;
 const timeInSelect = adForm.elements.timein;
 const timeOutSelect = adForm.elements.timeout;
+const addressInput = adForm.elements.address;
 
 if (
   titleInput === null ||
@@ -94,6 +96,10 @@ export const handleTimeOutSelectChange = () => {
   timeInSelect.value = timeOutSelect.value;
 };
 
+export const handleAddressInputChange = (coordinates) => {
+  addressInput.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
+};
+
 export const deactivateAdForm = () => {
   adForm.classList.add('ad-form--disabled');
 
@@ -118,3 +124,4 @@ timeInSelect.addEventListener('change', handleTimeInSelectChange);
 timeOutSelect.addEventListener('change', handleTimeOutSelectChange);
 
 updateCapacitySelect();
+handleAddressInputChange(MAP_CENTER_COORDINATES);
