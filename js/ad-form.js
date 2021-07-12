@@ -29,6 +29,7 @@ const roomSelect = adForm.elements.rooms;
 const capacitySelect = adForm.elements.capacity;
 const timeInSelect = adForm.elements.timein;
 const timeOutSelect = adForm.elements.timeout;
+const addressInput = adForm.elements.address;
 
 if (
   titleInput === null ||
@@ -42,7 +43,7 @@ if (
   throw new Error ('Элементы adForm не найдены');
 }
 
-export const handleTitleInputChange = () => {
+const handleTitleInputChange = () => {
   if (titleInput.value.length < titleInput.minLength) {
     const requredSymbolsCount = titleInput.minLength - titleInput.value.length;
 
@@ -57,12 +58,12 @@ export const handleTitleInputChange = () => {
   titleInput.reportValidity();
 };
 
-export const handleTypeSelectChange = () => {
+const handleTypeSelectChange = () => {
   priceInput.placeholder = minPriceByHousingType[typeSelect.value];
   priceInput.min = minPriceByHousingType[typeSelect.value];
 };
 
-export const handlePriceInputChange = () => {
+const handlePriceInputChange = () => {
   const price = Number(priceInput.value);
 
   if (price < Number(priceInput.min)) {
@@ -82,16 +83,20 @@ const updateCapacitySelect = () => {
   capacitySelect.value = roomCapacityByRooms[roomSelect.value].includes(capacitySelect.value) ? capacitySelect.value : '';
 };
 
-export const handleRoomSelectChange = () => {
+const handleRoomSelectChange = () => {
   updateCapacitySelect();
 };
 
-export const handleTimeInSelectChange = () => {
+const handleTimeInSelectChange = () => {
   timeOutSelect.value = timeInSelect.value;
 };
 
-export const handleTimeOutSelectChange = () => {
+const handleTimeOutSelectChange = () => {
   timeInSelect.value = timeOutSelect.value;
+};
+
+export const updateAddressInput = (coordinates) => {
+  addressInput.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
 };
 
 export const deactivateAdForm = () => {
@@ -118,3 +123,4 @@ timeInSelect.addEventListener('change', handleTimeInSelectChange);
 timeOutSelect.addEventListener('change', handleTimeOutSelectChange);
 
 updateCapacitySelect();
+deactivateAdForm();

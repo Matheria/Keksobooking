@@ -1,10 +1,15 @@
-import {createAdv} from './mocks/adv.js';
-import {createAdCard} from './ad-card.js';
-import './ad-form.js';
+import {activateAdForm, updateAddressInput} from './ad-form.js';
+import {initMap, addMapLoadHandler, addMainPinMarkerMoveEndHandler} from './map/map.js';
 
-const ad = createAdv();
-const adCard = createAdCard(ad);
+const handleMapLoad = () => {
+  activateAdForm();
+};
 
-const mapCanvas = document.querySelector('.map__canvas');
+const handleMainPinMarkerMoveEnd = (coordinates) => {
+  updateAddressInput(coordinates);
+};
 
-mapCanvas.appendChild(adCard);
+addMapLoadHandler(handleMapLoad);
+addMainPinMarkerMoveEndHandler(handleMainPinMarkerMoveEnd);
+
+initMap();
