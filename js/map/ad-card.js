@@ -1,5 +1,5 @@
-import {Feature, TypeOfHousing} from './enums.js';
-import {pluralize} from './utils.js';
+import {Feature, TypeOfHousing} from '../enums.js';
+import {pluralize} from '../utils.js';
 
 const featureName = {
   [Feature.wifi]: 'Wi-Fi',

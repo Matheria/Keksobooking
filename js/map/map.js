@@ -1,22 +1,57 @@
 import {activateMapFiltersForm, deactivateMapFiltersForm} from './map-filters-form.js';
-import {handleAddressInputChange} from './ad-form.js';
 import {createAdv} from '../mocks/adv.js';
-import {createAdCard} from '../ad-card.js';
+import {createAdCard} from './ad-card.js';
 import {createAndFillArray} from '../utils.js';
+
+if (!L) {
+  throw new Error ('Leaflet не найден');
+}
 
 deactivateMapFiltersForm();
 
-export const MAP_CENTER_COORDINATES = {
-  lat: 35.4122,
-  lng: 139.4130,
+const MAP_CENTER_COORDINATES = {
+  lat: 35.41221,
+  lng: 139.41301,
 };
+
 const MAP_SCALE = 10;
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    activateMapFiltersForm();
-  })
-  .setView(MAP_CENTER_COORDINATES, MAP_SCALE);
+/**
+ * Обработчики события load у map, полученные из других модулей (подписчики)
+ */
+const mapLoadHandlers = [];
+
+/**
+ * Функция для добавления обработчика события load у map
+ */
+export const addMapLoadHandler = (handler) => {
+  mapLoadHandlers.push(handler);
+};
+
+/**
+ * Обработчик события load у map, который активирует mapFiltersForm и
+ * извещает подписчиков о событии, вызывает переданные обработчики события
+ */
+const handleMapLoad = () => {
+  activateMapFiltersForm();
+
+  /**
+   * Проверяем, есть ли обработчики подписчиков
+   */
+  if (mapLoadHandlers.length) {
+    /**
+     * Осуществляем перебор массива с обработчиками подписчиков
+     */
+    mapLoadHandlers.forEach((handler) => {
+      /**
+       * Вызываем обработчик подписчика
+       */
+      handler();
+    });
+  }
+};
+
+const map = L.map('map-canvas').on('load', handleMapLoad);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -39,9 +74,24 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.addTo(map);
 
+const mainPinMarkerMoveEndHandlers = [];
+
+export const addMainPinMarkerMoveEndHandler = (handler) => {
+  mainPinMarkerMoveEndHandlers.push(handler);
+};
+
 const handleMainPinMarkerMoveEnd = () => {
   const coordinates = mainPinMarker.getLatLng();
-  handleAddressInputChange(coordinates);
+
+  if (mainPinMarkerMoveEndHandlers.length) {
+    mainPinMarkerMoveEndHandlers.forEach((handler) => {
+      /**
+       * Разница от реализации сверху - передаем данные обработчику подписчика,
+       * чтобы как-то обработать движение метки по карте в другом модуле
+       */
+      handler(coordinates);
+    });
+  }
 };
 
 mainPinMarker.on('moveend', handleMainPinMarkerMoveEnd);
@@ -64,7 +114,10 @@ const createPinMarker = (point) => {
     );
 };
 
-const createAdsMarkers = createAndFillArray(10, createAdv);
+export const initMap = () => {
+  map.setView(MAP_CENTER_COORDINATES, MAP_SCALE);
 
-createAdsMarkers.forEach(createPinMarker);
+  const advs = createAndFillArray(10, createAdv);
 
+  advs.forEach(createPinMarker);
+};
