@@ -1,5 +1,7 @@
 import {TypeOfHousing} from './enums.js';
 import {pluralize} from './utils.js';
+import * as fetch from './fetch.js';
+import {showAlert} from './alert.js';
 
 const adForm = document.querySelector('.ad-form');
 
@@ -115,6 +117,49 @@ export const activateAdForm = () => {
   });
 };
 
+const saveAdv =(body) => {
+  fetch.saveAdv(body)
+    .then(() => {
+      showAlert({
+        message: 'Объявление опубликовано успешно',
+      }, 5000);
+      adForm.reset();
+    })
+    .catch(() => {
+      showAlert({
+        message: 'Не удалось опубликовать объявление',
+        buttonParams: {
+          text: 'Попробовать ещё раз',
+          onClick: () => {
+            saveAdv();
+          },
+        },
+        isError: true,
+      });
+    });
+};
+
+export const handleAdFormOnSubmit = (evt) => {
+  evt.preventDefault();
+  saveAdv(new FormData(adForm));
+};
+
+const adFormResetHandlers = [];
+
+export const addAdFormResetHandler = (handler) => {
+  adFormResetHandlers.push(handler);
+};
+
+const handleAdFormReset = () => {
+  if (adFormResetHandlers.length) {
+    adFormResetHandlers.forEach((handler) => {
+      handler();
+    });
+  }
+};
+
+adForm.addEventListener('submit', handleAdFormOnSubmit);
+adForm.addEventListener('reset', handleAdFormReset);
 titleInput.addEventListener('input', handleTitleInputChange);
 typeSelect.addEventListener('change', handleTypeSelectChange);
 priceInput.addEventListener('input', handlePriceInputChange);

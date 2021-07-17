@@ -1,7 +1,7 @@
 import {activateMapFiltersForm, deactivateMapFiltersForm} from './map-filters-form.js';
-import {createAdv} from '../mocks/adv.js';
 import {createAdCard} from './ad-card.js';
-import {createAndFillArray} from '../utils.js';
+import * as fetch from '../fetch.js';
+import {showAlert} from '../alert.js';
 
 if (!L) {
   throw new Error ('Leaflet не найден');
@@ -15,6 +15,7 @@ const MAP_CENTER_COORDINATES = {
 };
 
 const MAP_SCALE = 10;
+const MAX_PINS_ON_MAP = 10;
 
 /**
  * Обработчики события load у map, полученные из других модулей (подписчики)
@@ -114,10 +115,33 @@ const createPinMarker = (point) => {
     );
 };
 
+const loadAdvs = () => {
+  fetch.loadAdvs()
+    .then((advs) => {
+      advs.slice(0, MAX_PINS_ON_MAP).forEach(createPinMarker);
+    })
+    .catch(() => {
+      showAlert({
+        message: 'Не удалось загрузить данные',
+        buttonParams: {
+          text: 'Попробовать ещё раз',
+          onClick: () => {
+            loadAdvs();
+          },
+        },
+        isError: true,
+      });
+    });
+};
+
 export const initMap = () => {
   map.setView(MAP_CENTER_COORDINATES, MAP_SCALE);
-
-  const advs = createAndFillArray(10, createAdv);
-
-  advs.forEach(createPinMarker);
+  loadAdvs();
 };
+
+export const resetMap = () => {
+  mainPinMarker.setLatLng(MAP_CENTER_COORDINATES);
+  map.setView(MAP_CENTER_COORDINATES, MAP_SCALE);
+  map.closePopup();
+};
+
