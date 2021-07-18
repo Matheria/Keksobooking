@@ -2,6 +2,13 @@ import {getAdvs} from '../state.js';
 import {debounce} from '../utils.js';
 import {MAX_PINS_ON_MAP} from './constants.js';
 
+const priceRangeByPriceTier = {
+  any: [-Infinity, Infinity],
+  low: [0, 10000],
+  middle: [10000, 50000],
+  high: [50000, Infinity],
+};
+
 const mapFiltersForm = document.querySelector('.map__filters');
 
 if (mapFiltersForm === null) {
@@ -28,13 +35,6 @@ const mapFiltersFormChangeHandlers = [];
 
 export const addMapFiltersFormChangeHandler = (handler) => {
   mapFiltersFormChangeHandlers.push(handler);
-};
-
-const priceRangeByPriceTier = {
-  any: [-Infinity, Infinity],
-  low: [0, 10000],
-  middle: [10000, 50000],
-  high: [50000, Infinity],
 };
 
 const getPriceRangeByPriceTier = (priceTier) => {
@@ -66,14 +66,10 @@ const filterAdv = (adv, {type, priceRange, rooms, guests, features}) => {
     return false;
   }
 
-  if (!adv.offer.features || !features.every((feature) => adv.offer.features.includes(feature))) {
-    return false;
-  }
-
-  return true;
+  return !adv.offer.features || !features.every((feature) => adv.offer.features.includes(feature));
 };
 
-const handleMapFiltersFormChange = () => {
+const handleMapFiltersFormChange = debounce(() => {
   const advs = getAdvs().slice(0, MAX_PINS_ON_MAP);
   const formData = new FormData(mapFiltersForm);
 
@@ -89,6 +85,10 @@ const handleMapFiltersFormChange = () => {
       handler(advs.filter((adv) => filterAdv(adv, {type, priceRange, rooms, guests, features})));
     });
   }
+});
+
+export const resetMapFiltersForm = () => {
+  mapFiltersForm.reset();
 };
 
-mapFiltersForm.addEventListener('change', debounce(handleMapFiltersFormChange));
+mapFiltersForm.addEventListener('change', handleMapFiltersFormChange);

@@ -1,9 +1,17 @@
-import {activateMapFiltersForm, deactivateMapFiltersForm, addMapFiltersFormChangeHandler} from './map-filters-form.js';
+import {activateMapFiltersForm, deactivateMapFiltersForm, addMapFiltersFormChangeHandler, resetMapFiltersForm} from './map-filters-form.js';
 import {createAdCard} from './ad-card.js';
 import * as fetch from '../fetch.js';
 import {showAlert} from '../alert.js';
 import {setAdvs, getAdvs} from '../state.js';
-import {MAP_CENTER_COORDINATES, MAP_SCALE, MAX_PINS_ON_MAP} from './constants.js';
+import {
+  MAP_CENTER_COORDINATES,
+  MAP_SCALE,
+  MAX_PINS_ON_MAP,
+  PIN_MARKER_ICON_SIZE,
+  PIN_MARKER_ICON_ANCHOR,
+  MAIN_PIN_MARKER_ICON_SIZE,
+  MAIN_PIN_MARKER_ICON_ANCHOR
+} from './constants.js';
 
 if (!L) {
   throw new Error ('Leaflet не найден');
@@ -63,8 +71,8 @@ const mainPinMarker = L.marker(
     draggable: true,
     icon: L.icon({
       iconUrl: './img/main-pin.svg',
-      iconSize: [52, 52],
-      iconAnchor: [26, 52],
+      iconSize: MAIN_PIN_MARKER_ICON_SIZE,
+      iconAnchor: MAIN_PIN_MARKER_ICON_ANCHOR,
     }),
   },
 );
@@ -103,8 +111,8 @@ const createPinMarker = (point) => {
     {
       icon: L.icon ({
         iconUrl: './img/pin.svg',
-        iconSize: [40, 40],
-        iconAnchor: [20, 40],
+        iconSize: PIN_MARKER_ICON_SIZE,
+        iconAnchor: PIN_MARKER_ICON_ANCHOR,
       }),
     },
   ).addTo(pinMarkersLayerGroup)
@@ -169,6 +177,7 @@ export const resetMap = () => {
   mainPinMarker.setLatLng(MAP_CENTER_COORDINATES);
   map.setView(MAP_CENTER_COORDINATES, MAP_SCALE);
   map.closePopup();
+  resetMapFiltersForm();
 };
 
 const handleMapFiltersFormChange = (advs) => {

@@ -1,7 +1,10 @@
 import {TypeOfHousing} from './enums.js';
 import {pluralize} from './utils.js';
 import * as fetch from './fetch.js';
-import {showAlert} from './alert.js';
+import {showAlert, hideAlert} from './alert.js';
+
+const DEFAULT_PRICE_INPUT_PLACEHOLDER = '1000';
+const ALERT_TIME_OUT = 5000;
 
 const adForm = document.querySelector('.ad-form');
 
@@ -122,7 +125,7 @@ const saveAdv =(body) => {
     .then(() => {
       showAlert({
         message: 'Объявление опубликовано успешно',
-      }, 5000);
+      }, ALERT_TIME_OUT);
       adForm.reset();
     })
     .catch(() => {
@@ -131,7 +134,7 @@ const saveAdv =(body) => {
         buttonParams: {
           text: 'Попробовать ещё раз',
           onClick: () => {
-            saveAdv();
+            hideAlert();
           },
         },
         isError: true,
@@ -156,6 +159,8 @@ const handleAdFormReset = () => {
       handler();
     });
   }
+
+  priceInput.placeholder = DEFAULT_PRICE_INPUT_PLACEHOLDER;
 };
 
 adForm.addEventListener('submit', handleAdFormOnSubmit);

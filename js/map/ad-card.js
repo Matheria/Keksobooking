@@ -1,6 +1,9 @@
 import {Feature, TypeOfHousing} from '../enums.js';
 import {pluralize} from '../utils.js';
 
+const adCardPhotoWidth = 45;
+const adCardPhotoHeight = 40;
+
 const featureName = {
   [Feature.wifi]: 'Wi-Fi',
   [Feature.dishwasher]: 'Посудомоечная машина',
@@ -47,8 +50,8 @@ const createAdCardOfferPhoto = (photo) => {
 
   adCardOfferPhoto.classList.add('popup__photo');
   adCardOfferPhoto.src = photo;
-  adCardOfferPhoto.width = 45;
-  adCardOfferPhoto.height = 40;
+  adCardOfferPhoto.width = adCardPhotoWidth;
+  adCardOfferPhoto.height = adCardPhotoHeight;
   adCardOfferPhoto.alt = 'Фотография жилья';
 
   return adCardOfferPhoto;

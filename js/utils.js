@@ -1,3 +1,12 @@
+const ACCUSATIVE_AND_PLURAL_NUMBER_1 = 5;
+const ACCUSATIVE_AND_PLURAL_NUMBER_2 = 11;
+const ACCUSATIVE_AND_PLURAL_NUMBER_3 = 20;
+const ACCUSATIVE_AND_PLURAL_NUMBER_4 = 10;
+const ACCUSATIVE_AND_PLURAL_NUMBER_5 = 100;
+const NOMINATIVE_AND_SINGULAR_NUMBER = 1;
+const GENITIVE_AND_PLURAL_NUMBER_1 = 2;
+const GENITIVE_AND_PLURAL_NUMBER_2 = 4;
+
 export const getRandomNumberInRange = (min, max) => {
   if (min >= max || min < 0) {
     throw new Error('Допускаются только положительные числа в диапазоне от меньшего к большему и не равные друг другу');
@@ -23,36 +32,26 @@ export const getRandomArray = (array) => {
 export const pluralize = (number, wordForms) => {
   const [one, two, many] = wordForms;
 
-  const mod10 = number % 10;
-  const mod100 = number % 100;
+  const mod10 = number % ACCUSATIVE_AND_PLURAL_NUMBER_4;
+  const mod100 = number % ACCUSATIVE_AND_PLURAL_NUMBER_5;
 
   switch (true) {
-    case mod100 >= 11 && mod100 <= 20:
+    case mod100 >= ACCUSATIVE_AND_PLURAL_NUMBER_2 && mod100 <= ACCUSATIVE_AND_PLURAL_NUMBER_3:
       return many || two;
 
-    case mod10 > 5:
+    case mod10 > ACCUSATIVE_AND_PLURAL_NUMBER_1:
       return many || two;
 
-    case mod10 === 1:
+    case mod10 === NOMINATIVE_AND_SINGULAR_NUMBER:
       return one;
 
-    case mod10 >= 2 && mod10 <= 4:
+    case mod10 >= GENITIVE_AND_PLURAL_NUMBER_1 && mod10 <= GENITIVE_AND_PLURAL_NUMBER_2:
       return two;
 
     default:
       return many || two;
   }
 };
-
-export const createAndFillArray = (length, fnOrValue) => {
-  if (typeof fnOrValue === 'function') {
-    return Array.from({length}).map(() => fnOrValue());
-  }
-
-  return Array.from({length}).fill(fnOrValue);
-};
-
-export const getFirstArrayElement = (array) => array[0];
 
 // Функция взята из интернета и доработана
 // Источник - https://www.freecodecamp.org/news/javascript-debounce-example
