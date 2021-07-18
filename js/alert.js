@@ -1,11 +1,6 @@
 let renderedAlert;
 let renderedAlertTimeout;
 
-/**
- * @typedef ButtonParams
- * @property {string} text
- * @property {function(Event): void} onClick
- */
 
 const handleWindowEscKeyDown = (evt) => {
   if (!evt.code === 'Escape') {
