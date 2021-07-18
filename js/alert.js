@@ -13,7 +13,6 @@ const handleWindowEscKeyDown = (evt) => {
   }
 
   renderedAlert.remove();
-  
   if (renderedAlertTimeout) {
     clearTimeout(renderedAlertTimeout);
 
