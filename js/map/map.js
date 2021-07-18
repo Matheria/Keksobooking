@@ -1,21 +1,15 @@
-import {activateMapFiltersForm, deactivateMapFiltersForm} from './map-filters-form.js';
+import {activateMapFiltersForm, deactivateMapFiltersForm, addMapFiltersFormChangeHandler} from './map-filters-form.js';
 import {createAdCard} from './ad-card.js';
 import * as fetch from '../fetch.js';
 import {showAlert} from '../alert.js';
+import {setAdvs, getAdvs} from '../state.js';
+import {MAP_CENTER_COORDINATES, MAP_SCALE, MAX_PINS_ON_MAP} from './constants.js';
 
 if (!L) {
   throw new Error ('Leaflet не найден');
 }
 
 deactivateMapFiltersForm();
-
-const MAP_CENTER_COORDINATES = {
-  lat: 35.41221,
-  lng: 139.41301,
-};
-
-const MAP_SCALE = 10;
-const MAX_PINS_ON_MAP = 10;
 
 /**
  * Обработчики события load у map, полученные из других модулей (подписчики)
@@ -61,6 +55,8 @@ L.tileLayer(
   },
 ).addTo(map);
 
+let pinMarkersLayerGroup;
+
 const mainPinMarker = L.marker(
   MAP_CENTER_COORDINATES,
   {
@@ -98,6 +94,10 @@ const handleMainPinMarkerMoveEnd = () => {
 mainPinMarker.on('moveend', handleMainPinMarkerMoveEnd);
 
 const createPinMarker = (point) => {
+  if (!pinMarkersLayerGroup) {
+    throw new Error('Отстуствует слой для отображения меток');
+  }
+
   L.marker(
     point.location,
     {
@@ -107,7 +107,7 @@ const createPinMarker = (point) => {
         iconAnchor: [20, 40],
       }),
     },
-  ).addTo(map)
+  ).addTo(pinMarkersLayerGroup)
     .bindPopup(createAdCard(point),
       {
         keepInView:true,
@@ -115,10 +115,36 @@ const createPinMarker = (point) => {
     );
 };
 
+const destroyPinMarkers = () => {
+  if (!pinMarkersLayerGroup) {
+    return;
+  }
+
+  map.removeLayer(pinMarkersLayerGroup);
+
+  pinMarkersLayerGroup = undefined;
+};
+
+const createPinMarkers = (advs) => {
+  if (pinMarkersLayerGroup) {
+    destroyPinMarkers();
+  }
+
+  pinMarkersLayerGroup = L.layerGroup();
+
+  advs.forEach(createPinMarker);
+
+  map.addLayer(pinMarkersLayerGroup);
+};
+
 const loadAdvs = () => {
   fetch.loadAdvs()
     .then((advs) => {
-      advs.slice(0, MAX_PINS_ON_MAP).forEach(createPinMarker);
+      setAdvs(advs);
+
+      createPinMarkers(
+        getAdvs().slice(0, MAX_PINS_ON_MAP),
+      );
     })
     .catch(() => {
       showAlert({
@@ -145,3 +171,12 @@ export const resetMap = () => {
   map.closePopup();
 };
 
+const handleMapFiltersFormChange = (advs) => {
+  if (pinMarkersLayerGroup) {
+    destroyPinMarkers();
+  }
+
+  createPinMarkers(advs);
+};
+
+addMapFiltersFormChangeHandler(handleMapFiltersFormChange);
