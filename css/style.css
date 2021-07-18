@@ -918,13 +918,7 @@ fieldset {
   border: 2px solid #ff5635;
 }
 
-
-/**
- * Сообщения об успешном и неуспешном создании объявления
- */
-
-.success,
-.error {
+.alert {
   position: fixed;
   top: 0;
   left: 0;
@@ -945,8 +939,7 @@ fieldset {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-.success__message,
-.error__message {
+.alert__message {
   position: relative;
 
   color: #ffffff;
@@ -954,8 +947,7 @@ fieldset {
   font-weight: 700;
 }
 
-.success__message::before,
-.error__message::before {
+.alert__message::before {
   content: "";
   position: absolute;
 
@@ -974,11 +966,11 @@ fieldset {
           transform: translateX(-50%);
 }
 
-.error__message::before {
+.alert_error .alert__message::before {
   background-image: url("../img/muffin-red.svg");
 }
 
-.error__button {
+.alert__button {
   padding: 10px;
 
   font-size: 22px;
@@ -993,16 +985,16 @@ fieldset {
   border-radius: 8px;
 }
 
-.error__button:hover,
-.error__button:focus {
+.alert__button:hover,
+.alert__button:focus {
   opacity: 0.8;
 }
 
-.error__button:focus {
+.alert__button:focus {
   outline: none;
 }
 
-.error__button:active {
+.alert__button:active {
   outline: none;
   opacity: 0.6;
 }
