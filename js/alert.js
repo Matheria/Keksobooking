@@ -65,7 +65,7 @@ const createAlert = (message, buttonParams, isError) => {
     hideAlert();
   };
 
-  alert.addEventListener('click', handleClickOutsideAlert);
+  alert.addEventListener('click', handleOutsideAlertClick);
 
   if (buttonParams) {
     alertButton.textContent = buttonParams.text;
