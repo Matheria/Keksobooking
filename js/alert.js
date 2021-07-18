@@ -63,7 +63,7 @@ const createAlert = (message, buttonParams, isError) => {
 
   alertMessage.textContent = message;
 
-  const handleClickOutsideAlert = (evt) => {
+  const handleOutsideAlertClick = (evt) => {
     if (evt.target !== alert) {
       return;
     }
