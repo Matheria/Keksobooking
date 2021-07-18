@@ -12,13 +12,12 @@ const handleWindowEscKeyDown = (evt) => {
     return;
   }
 
-  if (evt.code === 'Escape') {
-    renderedAlert.remove();
-    if (renderedAlertTimeout) {
-      clearTimeout(renderedAlertTimeout);
+  renderedAlert.remove();
+  
+  if (renderedAlertTimeout) {
+    clearTimeout(renderedAlertTimeout);
 
-      renderedAlertTimeout = undefined;
-    }
+    renderedAlertTimeout = undefined;
   }
 };
 
